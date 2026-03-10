@@ -3553,18 +3553,25 @@ path-scurry@^1.11.1:
     lru-cache "^10.2.0"
     minipass "^5.0.0 || ^6.0.2 || ^7.0.0"
 
-path2d@^0.2.0:
-  version "0.2.2"
-  resolved "http://r.npm.sankuai.com/path2d/download/path2d-0.2.2.tgz#cc85d61ed7827e7863a2ee36713d4b5315a3d85d"
-  integrity sha1-zIXWHteCfnhjou42cT1LUxWj2F0=
+path2d-polyfill@^2.0.1:
+  version "2.1.1"
+  resolved "http://r.npm.sankuai.com/path2d-polyfill/download/path2d-polyfill-2.1.1.tgz#6098b7bf2fc24c306c6377bcd558b17ba437ea27"
+  integrity sha1-YJi3vy/CTDBsY3e81Vixe6Q36ic=
+  dependencies:
+    path2d "0.1.1"
 
-pdfjs-dist@4.4.168:
-  version "4.4.168"
-  resolved "http://r.npm.sankuai.com/pdfjs-dist/download/pdfjs-dist-4.4.168.tgz#4487716376a33c68753ed37f782ae91d1c9ef8fa"
-  integrity sha1-RIdxY3ajPGh1PtN/eCrpHRye+Po=
+path2d@0.1.1:
+  version "0.1.1"
+  resolved "http://r.npm.sankuai.com/path2d/download/path2d-0.1.1.tgz#d3c3886cd2252fb2a7830c27ea7bb9a862d937ea"
+  integrity sha1-08OIbNIlL7Kngwwn6nu5qGLZN+o=
+
+pdfjs-dist@3.11.174:
+  version "3.11.174"
+  resolved "http://r.npm.sankuai.com/pdfjs-dist/download/pdfjs-dist-3.11.174.tgz#5ff47b80f2d58c8dd0d74f615e7c6a7e7e704c4b"
+  integrity sha1-X/R7gPLVjI3Q109hXnxqfn5wTEs=
   optionalDependencies:
     canvas "^2.11.2"
-    path2d "^0.2.0"
+    path2d-polyfill "^2.0.1"
 
 picocolors@^1.1.1:
   version "1.1.1"
