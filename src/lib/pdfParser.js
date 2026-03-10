@@ -195,23 +195,25 @@ async function parseInBrowser(file) {
 }
 
 // 主入口：优先调用远程API，失败则fallback到浏览器端
-export async function parsePdfInvoice(file) {
+export async function parsePdfInvoice(file, onProgress) {
   // 先尝试远程Python API
   try {
+    if (onProgress) onProgress('正在调用远程OCR服务...');
     console.log('尝试调用远程OCR API...');
     const data = await parseViaApi(file);
     console.log('API解析成功，共', data.length, '条记录');
-    return data;
+    return { data, rawText: JSON.stringify(data, null, 2) };
   } catch (apiError) {
     console.warn('远程API不可用，切换到浏览器端解析:', apiError.message);
   }
 
   // Fallback: 浏览器端解析
   try {
+    if (onProgress) onProgress('远程服务不可用，使用浏览器端解析...');
     console.log('使用浏览器端解析...');
     const data = await parseInBrowser(file);
     console.log('浏览器端解析成功，共', data.length, '条记录');
-    return data;
+    return { data, rawText: JSON.stringify(data, null, 2) };
   } catch (browserError) {
     console.error('浏览器端解析也失败:', browserError.message);
     throw new Error(
