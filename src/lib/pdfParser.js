@@ -8,7 +8,11 @@ async function getPdfJs() {
   try {
     const pdfjs = await import('pdfjs-dist');
     // 使用固定版本号，避免版本不匹配问题
-    pdfjs.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.8.69/pdf.worker.min.js';
+    // 使用本地 worker，避免 CDN 网络问题
+    pdfjs.GlobalWorkerOptions.workerSrc = new URL(
+      'pdfjs-dist/build/pdf.worker.min.mjs',
+      import.meta.url
+    ).toString();
     pdfjsLib = pdfjs;
     return pdfjsLib;
   } catch (e) {
