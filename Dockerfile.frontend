@@ -1,0 +1,36 @@
+# 前端项目 Dockerfile
+FROM node:18-alpine AS builder
+
+WORKDIR /app
+
+# 安装系统依赖（用于 canvas 等原生模块）
+RUN apk add --no-cache python3 make g++ cairo-dev pango-dev libjpeg-turbo-dev giflib-dev
+
+# 复制依赖文件
+COPY package*.json .npmrc ./
+
+# 使用 npm 安装依赖
+RUN npm install
+
+# 复制源代码
+COPY . .
+
+# 构建
+RUN npm run build
+
+# 生产环境
+FROM node:18-alpine
+
+WORKDIR /app
+
+# 安装 serve
+RUN npm install -g serve
+
+# 复制构建产物
+COPY --from=builder /app/dist ./dist
+
+# 暴露端口
+EXPOSE 3000
+
+# 启动服务
+CMD ["serve", "-s", "dist", "-l", "3000"]

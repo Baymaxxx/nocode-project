@@ -1,0 +1,19 @@
+{
+  "mcpServers": {
+    "codezy-fe-debug-mcp": {
+      "keyword": "@cs/mcp-tools-for-ide",
+      "command": "npx",
+      "args": [
+        "-y",
+        "--registry=http://r.npm.sankuai.com",
+        "@cs/mcp-tools-for-ide@1.0.18"
+      ],
+      "env": {
+        "CODEZY_TOOL_SCOPE": "fe_debug"
+      }
+    },
+    "MSC-DocQuery-Friday-Server": {
+      "url": "http://172.18.82.18:3033/sse"
+    }
+  }
+}
