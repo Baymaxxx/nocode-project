@@ -9,6 +9,9 @@ const Index = () => {
   const [fileName, setFileName] = useState('');
   const uploadRef = useRef(null);
 
+  // URL 参数 no=1 时禁用动画
+  const disableAnimation = new URLSearchParams(window.location.search).get('no') === '1';
+
   // 预览动画：先清空旧数据，再注入假结果触发完整动画序列
   const previewAnimation = () => {
     setParsedData([]);
@@ -36,13 +39,15 @@ const Index = () => {
           <p className="text-[15px] text-gray-400 mt-2">
             上传采购单 PDF，自动提取商品数据并导出 Excel
           </p>
-          {/* 临时预览按钮 */}
-          <button
-            onClick={previewAnimation}
-            className="mt-4 px-4 py-1.5 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-500 text-[12px] font-medium transition-all"
-          >
-            🎬 预览动画效果
-          </button>
+          {/* 预览按钮：no=1 时隐藏 */}
+          {!disableAnimation && (
+            <button
+              onClick={previewAnimation}
+              className="mt-4 px-4 py-1.5 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-500 text-[12px] font-medium transition-all"
+            >
+              🎬 预览动画效果
+            </button>
+          )}
         </div>
 
         <UploadSection
@@ -51,6 +56,7 @@ const Index = () => {
           setParsing={setParsing}
           parsing={parsing}
           setFileName={setFileName}
+          disableAnimation={disableAnimation}
         />
 
         {parsedData.length > 0 && (

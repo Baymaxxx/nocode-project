@@ -31,7 +31,7 @@ const DropZone = ({ dragging, onDragOver, onDragLeave, onDrop, onClick }) => (
   </div>
 );
 
-const UploadSection = forwardRef(({ onParsed, setParsing, parsing, setFileName }, ref) => {
+const UploadSection = forwardRef(({ onParsed, setParsing, parsing, setFileName, disableAnimation = false }, ref) => {
   const inputRef = useRef(null);
   const [status, setStatus] = useState('idle');
   const [errorMsg, setErrorMsg] = useState('');
@@ -115,16 +115,41 @@ const UploadSection = forwardRef(({ onParsed, setParsing, parsing, setFileName }
     setShowRaw(false);
     setProgressMsg('');
     setParsing(true);
-    setShowAnim(true);
-    setAnimPhase('throw');
+    // no=1 时跳过动画，直接解析
+    if (!disableAnimation) {
+      setShowAnim(true);
+      setAnimPhase('throw');
+    }
 
     try {
       const result = await parsePdfInvoice(file, (msg) => setProgressMsg(msg));
       setRawText(result.rawText || '');
-      parsedResultRef.current = result;
+      if (disableAnimation) {
+        // 无动画模式：直接展示结果
+        if (result?.data?.length > 0) {
+          onParsed(result.data);
+          setStatus('success');
+        } else {
+          onParsed([]);
+          setStatus('error');
+          setErrorMsg('未能识别到商品数据，请查看原始文本确认内容是否正确提取');
+          if (result?.rawText) setShowRaw(true);
+        }
+        setParsing(false);
+        setProgressMsg('');
+      } else {
+        parsedResultRef.current = result;
+      }
     } catch (e) {
-      parsedResultRef.current = { data: [], rawText: '' };
-      setErrorMsg(e.message || '解析失败，请检查文件格式');
+      if (disableAnimation) {
+        setStatus('error');
+        setErrorMsg(e.message || '解析失败，请检查文件格式');
+        setParsing(false);
+        setProgressMsg('');
+      } else {
+        parsedResultRef.current = { data: [], rawText: '' };
+        setErrorMsg(e.message || '解析失败，请检查文件格式');
+      }
     }
   };
 
