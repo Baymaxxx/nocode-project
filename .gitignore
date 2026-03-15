@@ -1,2 +1,6 @@
 node_modules
 build
+
+# 本地环境变量不提交，避免覆盖线上配置
+.env.local
+.env.*.local
